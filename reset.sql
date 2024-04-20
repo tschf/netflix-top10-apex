@@ -1,5 +1,8 @@
--- Tables (including liquibase tables)
+-- App Tables (including liquibase tables)
 drop table screen_ranking purge;
+drop table country purge;
+
+-- Liquibase tables
 drop table databasechangelog purge;
 drop table databasechangelog_actions purge;
 drop table databasechangeloglock purge;
