@@ -316,7 +316,7 @@ regions:
     media: 
       advanced-formatting: false
       source: Image URL
-      url: 'https://media.vanityfair.com/photos/5f5245d91e10df7a77868af6/master/w_1920,c_limit/avatar-the-last-airbender.jpg'
+      url: '#APP_FILES#todo_poster.png'
       position: Body
       appearance: Auto
       sizing: Fit
