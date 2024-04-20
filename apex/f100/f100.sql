@@ -37,10 +37,11 @@ prompt APPLICATION 100 - Netflix Top 10
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                      3
---       Items:                    4
+--       Items:                    7
 --       Processes:                5
---       Regions:                  4
+--       Regions:                  6
 --       Buttons:                  2
+--       Dynamic Actions:          1
 --     Shared Components:
 --       Logic:
 --         Build Options:          1
@@ -69,7 +70,7 @@ prompt APPLICATION 100 - Netflix Top 10
 --       E-Mail:
 --     Supporting Objects:  Included
 --   Version:         23.2.0
---   Instance ID:     1370246083532517
+--   Instance ID:     4989548656062440
 --
 
 prompt --application/delete_application
@@ -114,7 +115,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Netflix Top 10'
 ,p_last_updated_by=>'DEVVER'
-,p_last_upd_yyyymmddhh24miss=>'20240420051141'
+,p_last_upd_yyyymmddhh24miss=>'20240420112723'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>6
 ,p_print_server_type=>'NATIVE'
@@ -15807,6 +15808,12 @@ wwv_flow_imp_shared.create_plugin(
 ,p_help_text=>'Display content in a formatted row with a title, description, and more. Supports avatars and badges. Available for a single row or as a report with multiple rows.'
 );
 wwv_flow_imp_shared.create_plugin_attr_group(
+ p_id=>wwv_flow_imp.id(1675728690196319544)
+,p_plugin_id=>wwv_flow_imp.id(5383481907521359)
+,p_title=>'Appearance'
+,p_display_sequence=>30
+);
+wwv_flow_imp_shared.create_plugin_attr_group(
  p_id=>wwv_flow_imp.id(1932621308938593058)
 ,p_plugin_id=>wwv_flow_imp.id(5383481907521359)
 ,p_title=>'Avatar'
@@ -15817,12 +15824,6 @@ wwv_flow_imp_shared.create_plugin_attr_group(
 ,p_plugin_id=>wwv_flow_imp.id(5383481907521359)
 ,p_title=>'Badge'
 ,p_display_sequence=>20
-);
-wwv_flow_imp_shared.create_plugin_attr_group(
- p_id=>wwv_flow_imp.id(1675728690196319544)
-,p_plugin_id=>wwv_flow_imp.id(5383481907521359)
-,p_title=>'Appearance'
-,p_display_sequence=>30
 );
 wwv_flow_imp_shared.create_plugin_attribute(
  p_id=>wwv_flow_imp.id(5384345450521364)
@@ -16738,16 +16739,16 @@ wwv_flow_imp_shared.create_plugin(
 ,p_help_text=>'Display report content in a formatted media list. Supports avatars and badges. Available for a single row or as a report with multiple rows.'
 );
 wwv_flow_imp_shared.create_plugin_attr_group(
- p_id=>wwv_flow_imp.id(1805427974904405022)
-,p_plugin_id=>wwv_flow_imp.id(5410177042521373)
-,p_title=>'Badge'
-,p_display_sequence=>20
-);
-wwv_flow_imp_shared.create_plugin_attr_group(
  p_id=>wwv_flow_imp.id(1805428529916405023)
 ,p_plugin_id=>wwv_flow_imp.id(5410177042521373)
 ,p_title=>'Avatar'
 ,p_display_sequence=>10
+);
+wwv_flow_imp_shared.create_plugin_attr_group(
+ p_id=>wwv_flow_imp.id(1805427974904405022)
+,p_plugin_id=>wwv_flow_imp.id(5410177042521373)
+,p_title=>'Badge'
+,p_display_sequence=>20
 );
 wwv_flow_imp_shared.create_plugin_attribute(
  p_id=>wwv_flow_imp.id(5410855039521374)
@@ -17337,16 +17338,16 @@ wwv_flow_imp_shared.create_plugin(
 ,p_help_text=>'Display a series of events. Supports avatars and badges. Available for a single row or as a report with multiple rows.'
 );
 wwv_flow_imp_shared.create_plugin_attr_group(
- p_id=>wwv_flow_imp.id(2152509840637628331)
-,p_plugin_id=>wwv_flow_imp.id(5426884515521379)
-,p_title=>'Badge'
-,p_display_sequence=>20
-);
-wwv_flow_imp_shared.create_plugin_attr_group(
  p_id=>wwv_flow_imp.id(2152510395649628332)
 ,p_plugin_id=>wwv_flow_imp.id(5426884515521379)
 ,p_title=>'Avatar'
 ,p_display_sequence=>10
+);
+wwv_flow_imp_shared.create_plugin_attr_group(
+ p_id=>wwv_flow_imp.id(2152509840637628331)
+,p_plugin_id=>wwv_flow_imp.id(5426884515521379)
+,p_title=>'Badge'
+,p_display_sequence=>20
 );
 wwv_flow_imp_shared.create_plugin_attribute(
  p_id=>wwv_flow_imp.id(5427599232521380)
@@ -17900,12 +17901,13 @@ wwv_flow_imp_page.create_page(
 ,p_name=>'Home'
 ,p_alias=>'HOME'
 ,p_step_title=>'Netflix Top 10'
+,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'13'
 ,p_last_updated_by=>'DEVVER'
-,p_last_upd_yyyymmddhh24miss=>'20240420051141'
+,p_last_upd_yyyymmddhh24miss=>'20240420112723'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(5477603046521414)
@@ -17929,41 +17931,92 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'BELOW'
 ,p_plug_source=>'<em>The data feed is either out of date or hasn''t been loaded yet. Please grab it from TODO and upload it</em>'
-,p_plug_display_condition_type=>'EXISTS'
+,p_plug_display_condition_type=>'NOT_EXISTS'
 ,p_plug_display_when_condition=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'with data_days_old as (select sysdate-max(week) days from screen_ranking)',
 'select 1',
 'from data_days_old',
-'where days > 7;'))
+'where days <= 7;'))
 ,p_attribute_01=>'N'
 ,p_attribute_02=>'HTML'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(5482051046532609)
-,p_plug_name=>'New'
+ p_id=>wwv_flow_imp.id(5482419551532613)
+,p_plug_name=>'Show Collection'
+,p_region_template_options=>'#DEFAULT#:t-Region--textContent:t-Region--scrollBody'
+,p_plug_template=>wwv_flow_imp.id(5288843669521320)
+,p_plug_display_sequence=>20
+,p_attribute_01=>'N'
+,p_attribute_02=>'HTML'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(5482557963532614)
+,p_plug_name=>'Filter Options'
+,p_parent_plug_id=>wwv_flow_imp.id(5482419551532613)
+,p_region_template_options=>'#DEFAULT#:t-Region--noUI:t-Region--scrollBody'
+,p_plug_template=>wwv_flow_imp.id(5288843669521320)
+,p_plug_display_sequence=>10
+,p_plug_grid_column_span=>3
+,p_plug_display_point=>'SUB_REGIONS'
+,p_attribute_01=>'N'
+,p_attribute_02=>'HTML'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(5482718885532616)
+,p_plug_name=>'Filtered Results'
+,p_parent_plug_id=>wwv_flow_imp.id(5482419551532613)
 ,p_region_template_options=>'#DEFAULT#'
-,p_component_template_options=>'#DEFAULT#'
 ,p_plug_template=>wwv_flow_imp.id(5234275635521314)
 ,p_plug_display_sequence=>20
-,p_query_type=>'TABLE'
-,p_query_table=>'SCREEN_RANKING'
-,p_include_rowid_column=>false
+,p_plug_new_grid_row=>false
+,p_plug_display_point=>'SUB_REGIONS'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select ',
+'  category,',
+'  show_title,',
+'  season_title,',
+'  badge_css_classes',
+'from ',
+'  screen_ranking_v',
+'where ',
+'  (',
+'    country_id in (select column_value from table(apex_string.split(:P1_COUNTRY_ID_LIST, '':'')))',
+'    or :P1_COUNTRY_ID_LIST is null',
+'  )',
+'  and (',
+'    category = :P1_CATEGORY or :P1_CATEGORY is null',
+'  )',
+'  and (',
+'    sysdate-week <= to_number(:P1_RANKING_AGE_DAYS)',
+'    or :P1_RANKING_AGE_DAYS is null',
+'  )',
+'group by category, show_title, season_title, badge_css_classes'))
 ,p_lazy_loading=>false
 ,p_plug_source_type=>'NATIVE_CARDS'
-,p_plug_query_num_rows_type=>'SCROLL'
-,p_show_total_row_count=>false
+,p_ajax_items_to_submit=>'P1_COUNTRY_ID_LIST,P1_CATEGORY,P1_RANKING_AGE_DAYS'
+,p_plug_query_num_rows=>10
+,p_plug_query_num_rows_type=>'SET'
+,p_show_total_row_count=>true
 );
 wwv_flow_imp_page.create_card(
- p_id=>wwv_flow_imp.id(5482110550532610)
-,p_region_id=>wwv_flow_imp.id(5482051046532609)
+ p_id=>wwv_flow_imp.id(5483829669532627)
+,p_region_id=>wwv_flow_imp.id(5482718885532616)
 ,p_layout_type=>'GRID'
+,p_grid_column_count=>2
 ,p_title_adv_formatting=>false
 ,p_title_column_name=>'SHOW_TITLE'
 ,p_sub_title_adv_formatting=>false
 ,p_sub_title_column_name=>'SEASON_TITLE'
 ,p_body_adv_formatting=>false
 ,p_second_body_adv_formatting=>false
+,p_badge_column_name=>'CATEGORY'
+,p_badge_css_classes=>'&BADGE_CSS_CLASSES.'
 ,p_media_adv_formatting=>false
+,p_media_source_type=>'STATIC_URL'
+,p_media_url=>'https://media.vanityfair.com/photos/5f5245d91e10df7a77868af6/master/w_1920,c_limit/avatar-the-last-airbender.jpg'
+,p_media_display_position=>'BODY'
+,p_media_sizing=>'FIT'
 );
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(5481676293532605)
@@ -18000,6 +18053,84 @@ wwv_flow_imp_page.create_page_item(
 ,p_attribute_09=>'REQUEST'
 ,p_attribute_10=>'N'
 ,p_attribute_12=>'INLINE'
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(5483978543532628)
+,p_name=>'P1_COUNTRY_ID_LIST'
+,p_item_sequence=>20
+,p_item_plug_id=>wwv_flow_imp.id(5482557963532614)
+,p_item_default=>'select country_id from country where country_iso2 in (''AU'', ''NZ'')'
+,p_item_default_type=>'SQL_QUERY_COLON'
+,p_prompt=>'Country'
+,p_display_as=>'NATIVE_POPUP_LOV'
+,p_lov=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select country_name d, country_id r',
+'from country',
+'order by d'))
+,p_lov_display_null=>'YES'
+,p_cSize=>30
+,p_field_template=>wwv_flow_imp.id(5350753890521329)
+,p_item_template_options=>'#DEFAULT#'
+,p_lov_display_extra=>'YES'
+,p_attribute_01=>'POPUP'
+,p_attribute_02=>'FIRST_ROWSET'
+,p_attribute_03=>'Y'
+,p_attribute_04=>'N'
+,p_attribute_05=>'N'
+,p_attribute_11=>':'
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(5484231505532631)
+,p_name=>'P1_CATEGORY'
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_imp.id(5482557963532614)
+,p_prompt=>'Category'
+,p_display_as=>'NATIVE_SELECT_LIST'
+,p_lov=>'STATIC:Film;Film,TV;TV'
+,p_lov_display_null=>'YES'
+,p_lov_null_text=>'All Categories'
+,p_cHeight=>1
+,p_field_template=>wwv_flow_imp.id(5350753890521329)
+,p_item_template_options=>'#DEFAULT#'
+,p_lov_display_extra=>'YES'
+,p_attribute_01=>'NONE'
+,p_attribute_02=>'N'
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(5484574634532634)
+,p_name=>'P1_RANKING_AGE_DAYS'
+,p_item_sequence=>30
+,p_item_plug_id=>wwv_flow_imp.id(5482557963532614)
+,p_item_default=>'7'
+,p_prompt=>'Ranking Age Days'
+,p_display_as=>'NATIVE_NUMBER_FIELD'
+,p_cSize=>30
+,p_field_template=>wwv_flow_imp.id(5350753890521329)
+,p_item_template_options=>'#DEFAULT#'
+,p_attribute_01=>'7'
+,p_attribute_03=>'left'
+,p_attribute_04=>'decimal'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(5484305671532632)
+,p_name=>'onChange: All Facets'
+,p_event_sequence=>10
+,p_triggering_element_type=>'ITEM'
+,p_triggering_element=>'P1_CATEGORY,P1_COUNTRY_ID_LIST,P1_RANKING_AGE_DAYS'
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'change'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(5484424603532633)
+,p_event_id=>wwv_flow_imp.id(5484305671532632)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_name=>'Refresh Cards'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(5482718885532616)
 );
 wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(5481725934532606)

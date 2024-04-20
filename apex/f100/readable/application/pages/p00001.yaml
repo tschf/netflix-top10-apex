@@ -17,7 +17,7 @@ navigation-menu:
 
 navigation: 
   cursor-focus: Do not focus cursor
-  warn-on-unsaved-changes: true
+  warn-on-unsaved-changes: false
 
 security: 
   authentication: Page Requires Authentication
@@ -118,12 +118,12 @@ regions:
     exclude-title-from-translation: false
 
   server-side-condition: 
-    type: Rows returned
+    type: No Rows returned
     sql-query: |
       with data_days_old as (select sysdate-max(week) days from screen_ranking)
       select 1
       from data_days_old
-      where days > 7;
+      where days <= 7;
 
   server-cache: 
     caching: Disabled
@@ -136,21 +136,11 @@ regions:
       output-as: HTML
       expand-shortcuts: false
 
-- # ====== Region: New =========================================
-  id: 5482051046532609
+- # ====== Region: Show Collection =============================
+  id: 5482419551532613
   identification: 
-    title: New
-    type: Cards
-
-  source: 
-    location: Local Database
-    type: Table / View
-    table-owner: Parsing Schema
-    table-name: SCREEN_RANKING
-    include-rowid-column: false
-
-  order-by: 
-    type: None
+    title: Show Collection
+    type: Static Content
 
   layout: 
     sequence: 20
@@ -158,6 +148,121 @@ regions:
     position: BODY
     start-new-layout: false
     start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+
+  appearance: 
+    template: Standard # 5288843669521320
+    template-options: 
+    - '#DEFAULT#'
+    - t-Region--textContent
+    - t-Region--scrollBody
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: Filter Options ==============================
+  id: 5482557963532614
+  identification: 
+    title: Filter Options
+    type: Static Content
+
+  layout: 
+    sequence: 10
+    parent-region: Show Collection # 5482419551532613
+    position: SUB_REGIONS
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: 3
+
+  appearance: 
+    template: Standard # 5288843669521320
+    template-options: 
+    - '#DEFAULT#'
+    - t-Region--noUI
+    - t-Region--scrollBody
+    render-components: Above Content
+
+  accessibility: 
+    use-landmark: true
+    landmark-type: Template Default
+
+  advanced: 
+    region-display-selector: false
+    exclude-title-from-translation: false
+
+  server-cache: 
+    caching: Disabled
+
+  customization: 
+    customizable: Not Customizable By End Users
+
+  attributes: 
+    settings: 
+      output-as: HTML
+      expand-shortcuts: false
+
+- # ====== Region: Filtered Results ============================
+  id: 5482718885532616
+  identification: 
+    title: Filtered Results
+    type: Cards
+
+  source: 
+    location: Local Database
+    type: SQL Query
+    sql-query: |
+      select 
+        category,
+        show_title,
+        season_title,
+        badge_css_classes
+      from 
+        screen_ranking_v
+      where 
+        (
+          country_id in (select column_value from table(apex_string.split(:P1_COUNTRY_ID_LIST, ':')))
+          or :P1_COUNTRY_ID_LIST is null
+        )
+        and (
+          category = :P1_CATEGORY or :P1_CATEGORY is null
+        )
+        and (
+          sysdate-week <= to_number(:P1_RANKING_AGE_DAYS)
+          or :P1_RANKING_AGE_DAYS is null
+        )
+      group by category, show_title, season_title, badge_css_classes
+    page-items-to-submit: 
+    - P1_COUNTRY_ID_LIST
+    - P1_CATEGORY
+    - P1_RANKING_AGE_DAYS
+
+  layout: 
+    sequence: 20
+    parent-region: Show Collection # 5482419551532613
+    position: SUB_REGIONS
+    start-new-layout: false
+    start-new-row: false
     column: Automatic
     new-column: true
     column-span: Automatic
@@ -183,10 +288,10 @@ regions:
     customizable: Not Customizable By End Users
 
   attributes: 
-    id: 5482110550532610
+    id: 5483829669532627
     appearance: 
       layout: Grid
-      grid-columns: Auto
+      grid-columns: 2 Columns
 
     title: 
       advanced-formatting: false
@@ -204,17 +309,25 @@ regions:
 
     icon-and-badge: 
       icon-source: No Icon
+      badge-column: CATEGORY
+      badge-css-classes: 
+      - '&BADGE_CSS_CLASSES.'
 
     media: 
       advanced-formatting: false
-      source: No Media
+      source: Image URL
+      url: 'https://media.vanityfair.com/photos/5f5245d91e10df7a77868af6/master/w_1920,c_limit/avatar-the-last-airbender.jpg'
+      position: Body
+      appearance: Auto
+      sizing: Fit
 
     performance: 
       lazy-loading: false
 
     pagination: 
-      type: Scroll
-      show-total-count: false
+      type: Page
+      show-total-count: true
+      cards-per-page: 10
 
 page-items: 
 - # ====== Page Item: P1_NETFLIX_FEED_FILE =====================
@@ -271,6 +384,194 @@ page-items:
     session-state-protection: Unrestricted
     restricted-characters: All characters can be saved.
 
+- # ====== Page Item: P1_COUNTRY_ID_LIST =======================
+  id: 5483978543532628
+  identification: 
+    name: P1_COUNTRY_ID_LIST
+    type: Popup LOV
+
+  label: 
+    label: Country
+    alignment: Left
+
+  settings: 
+    display-as: Inline Popup
+    initial-fetch: Automatic
+    multiple-values: true
+    separator: ':'
+    manual-entry: false
+    search-as-you-type: false
+
+  layout: 
+    sequence: 20
+    region: Filter Options # 5482557963532614
+    position: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating # 5350753890521329
+    template-options: 
+    - '#DEFAULT#'
+    width: 30
+
+  validation: 
+    value-required: false
+
+  list-of-values: 
+    type: SQL Query
+    sql-query: |
+      select country_name d, country_id r
+      from country
+      order by d
+    display-extra-values: true
+    display-null-value: true
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  default: 
+    type: SQL Query returning Colon Delimited List
+    sql-query-colon: select country_id from country where country_iso2 in ('AU', 'NZ')
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P1_CATEGORY ==============================
+  id: 5484231505532631
+  identification: 
+    name: P1_CATEGORY
+    type: Select List
+
+  label: 
+    label: Category
+    alignment: Left
+
+  settings: 
+    page-action-on-selection: None
+    allow-multi-selection: false
+
+  layout: 
+    sequence: 10
+    region: Filter Options # 5482557963532614
+    position: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating # 5350753890521329
+    template-options: 
+    - '#DEFAULT#'
+    height: 1
+
+  validation: 
+    value-required: false
+
+  list-of-values: 
+    type: Static Values
+    static-values: 'STATIC:Film;Film,TV;TV'
+    display-extra-values: true
+    display-null-value: true
+    null-display-value: All Categories
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
+- # ====== Page Item: P1_RANKING_AGE_DAYS ======================
+  id: 5484574634532634
+  identification: 
+    name: P1_RANKING_AGE_DAYS
+    type: Number Field
+
+  label: 
+    label: Ranking Age Days
+    alignment: Left
+
+  settings: 
+    minimum-value: 7
+    number-alignment: Start
+    virtual-keyboard: Decimal
+
+  layout: 
+    sequence: 30
+    region: Filter Options # 5482557963532614
+    position: BODY
+    alignment: Left
+    start-new-layout: false
+    start-new-row: true
+    column: Automatic
+    new-column: true
+    column-span: Automatic
+    label-column-span: Page Template Default
+
+  appearance: 
+    template: Optional - Floating # 5350753890521329
+    template-options: 
+    - '#DEFAULT#'
+    width: 30
+
+  validation: 
+    value-required: false
+
+  advanced: 
+    warn-on-unsaved-changes: Page Default
+
+  source: 
+    type: Null
+    used: Only when current value in session state is null
+
+  default: 
+    type: Static
+    static-value: 7
+
+  session-state: 
+    storage: Per Session (Persistent)
+
+  quick-picks: 
+    show-quick-picks: false
+
+  security: 
+    session-state-protection: Unrestricted
+    store-value-encrypted-in-session-state: true
+    restricted-characters: All characters can be saved.
+
 buttons: 
 - # ====== Button: UPLOAD ======================================
   id: 5481676293532605
@@ -299,6 +600,42 @@ buttons:
     action: Submit Page
     execute-validations: true
     warn-on-unsaved-changes: Do Not Check
+
+dynamic-actions: 
+- # ====== Dynamic Action: onChange: All Facets ================
+  id: 5484305671532632
+  identification: 
+    name: 'onChange: All Facets'
+
+  execution: 
+    sequence: 10
+    event-scope: Static
+    type: Immediate
+
+  when: 
+    event: EVENT.EVENT.BROWSER.CHANGE
+    selection-type: Item(s)
+    item(s): 
+    - P1_CATEGORY
+    - P1_COUNTRY_ID_LIST
+    - P1_RANKING_AGE_DAYS
+
+  actions: 
+  - # ====== Action: Refresh Cards ===============================
+    id: 5484424603532633
+    identification: 
+      name: Refresh Cards
+      action: Refresh
+
+    affected-elements: 
+      selection-type: Region
+      region: Filtered Results # 5482718885532616
+
+    execution: 
+      sequence: 10
+      event: 'onChange: All Facets' # 5484305671532632
+      fire-when-event-result-is: True
+      fire-on-initialization: false
 
 processes: 
 - # ====== Process: Proceed Top10 File =========================
