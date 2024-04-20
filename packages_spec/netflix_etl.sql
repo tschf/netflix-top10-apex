@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset tschafer:netflix_etl_package_spec runOnChange:true endDelimiter:/ rollbackEndDelimiter:/
+--changeset tschf:netflix_etl_package_spec runOnChange:true endDelimiter:/ rollbackEndDelimiter:/
 create or replace package netflix_etl
 authid definer
 as
