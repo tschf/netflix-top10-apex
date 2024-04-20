@@ -167,7 +167,7 @@ page-items:
     width: 30
 
   validation: 
-    value-required: false
+    value-required: true
 
   advanced: 
     warn-on-unsaved-changes: Page Default
@@ -199,7 +199,7 @@ buttons:
     column: Automatic
     new-column: true
     column-span: Automatic
-    alignment: Left center
+    alignment: Right
 
   appearance: 
     button-template: Text # 5353246462521330
@@ -213,10 +213,10 @@ buttons:
     warn-on-unsaved-changes: Do Not Check
 
 processes: 
-- # ====== Process: New ========================================
+- # ====== Process: Proceed Top10 File =========================
   id: 5481725934532606
   identification: 
-    name: New
+    name: Proceed Top10 File
     type: Execute Code
     execution-chain: None
 
@@ -226,11 +226,13 @@ processes:
     pl/sql-code: |
       declare
         l_upload_rec apex_application_temp_files%rowtype;
-      
       begin
       
-         null;
+        select * into l_upload_rec
+        from apex_application_temp_files
+        where name = :P1_NETFLIX_FEED_FILE;
       
+        netflix_etl.sync_to_table(p_upload_file => l_upload_rec.blob_content);
       end;
 
   execution: 
@@ -238,6 +240,25 @@ processes:
     point: Processing
     run-process: Once Per Page Visit (default)
 
+  success-message: 
+    success-message: Uploaded file has been processed.
+
   error: 
     display-location: Inline in Notification
+
+branches: 
+- # ====== Branch: Branch to self ==============================
+  id: 5481917990532608
+  identification: 
+    name: Branch to self
+
+  execution: 
+    sequence: 10
+    point: After Processing
+
+  behavior: 
+    type: Page or URL (Redirect)
+    target: 
+      url: 'f?p=&APP_ID.:1:&SESSION.::&DEBUG.:::&success_msg=#SUCCESS_MSG#'
+      page: 1 # Home
 

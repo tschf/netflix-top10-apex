@@ -114,7 +114,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Netflix Top 10'
 ,p_last_updated_by=>'DEVVER'
-,p_last_upd_yyyymmddhh24miss=>'20240420035207'
+,p_last_upd_yyyymmddhh24miss=>'20240420044406'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>6
 ,p_print_server_type=>'NATIVE'
@@ -17905,7 +17905,7 @@ wwv_flow_imp_page.create_page(
 ,p_protection_level=>'C'
 ,p_page_component_map=>'13'
 ,p_last_updated_by=>'DEVVER'
-,p_last_upd_yyyymmddhh24miss=>'20240420035207'
+,p_last_upd_yyyymmddhh24miss=>'20240420044406'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(5477603046521414)
@@ -17944,9 +17944,18 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_image_alt=>'Upload'
 ,p_grid_new_row=>'Y'
 );
+wwv_flow_imp_page.create_page_branch(
+ p_id=>wwv_flow_imp.id(5481917990532608)
+,p_branch_name=>'Branch to self'
+,p_branch_action=>'f?p=&APP_ID.:1:&SESSION.::&DEBUG.:::&success_msg=#SUCCESS_MSG#'
+,p_branch_point=>'AFTER_PROCESSING'
+,p_branch_type=>'REDIRECT_URL'
+,p_branch_sequence=>10
+);
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(5481367384532602)
 ,p_name=>'P1_NETFLIX_FEED_FILE'
+,p_is_required=>true
 ,p_item_sequence=>10
 ,p_item_plug_id=>wwv_flow_imp.id(5481232566532601)
 ,p_prompt=>'Netflix Feed File'
@@ -17964,18 +17973,21 @@ wwv_flow_imp_page.create_page_process(
 ,p_process_sequence=>10
 ,p_process_point=>'AFTER_SUBMIT'
 ,p_process_type=>'NATIVE_PLSQL'
-,p_process_name=>'New'
+,p_process_name=>'Proceed Top10 File'
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'declare',
 '  l_upload_rec apex_application_temp_files%rowtype;',
-'',
 'begin',
 '',
-'   null;',
+'  select * into l_upload_rec',
+'  from apex_application_temp_files',
+'  where name = :P1_NETFLIX_FEED_FILE;',
 '',
+'  netflix_etl.sync_to_table(p_upload_file => l_upload_rec.blob_content);',
 'end;'))
 ,p_process_clob_language=>'PLSQL'
 ,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+,p_process_success_message=>'Uploaded file has been processed.'
 ,p_internal_uid=>5481725934532606
 );
 end;
