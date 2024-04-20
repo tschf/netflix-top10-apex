@@ -18,7 +18,7 @@ The landing page provides a file upload form.
 
 ## Feed File
 
-Go to: https://www.netflix.com/tudum/top10/tv
+Go to: https://www.netflix.com/tudum/top10
 
 At the bottom there are links for
 
