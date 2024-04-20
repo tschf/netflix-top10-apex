@@ -7,5 +7,13 @@
 >
 
   <includeAll path="tables" relativeToChangelogFile="true" />
+  <includeAll path="packages_spec" relativeToChangelogFile="true" />
+  <includeAll path="packages_body" relativeToChangelogFile="true" />
 
+  <changeSet id="apex_f100" author="tschf" runOnChange="true">
+    <ora:runApexScript ownerName="tschf" sourceType="FILE" objectType="SCRIPT" objectName="f100" relativeToChangelogFile="true">
+        <ora:source> apex/f100/f100.sql</ora:source>
+    </ora:runApexScript>
+    <rollback></rollback>
+  </changeSet>
 </databaseChangeLog>
