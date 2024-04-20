@@ -1,0 +1,16 @@
+---
+- # ====== Authentication: Public ==============================
+  id: 5480265184526106
+  identification: 
+    name: Public
+
+  settings: 
+    type: No Authentication
+    username: netflix.consumer
+
+  login-processing: 
+    switch-in-session: false
+
+  real-application-security: 
+    ras-mode: Disabled
+
