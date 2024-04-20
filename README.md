@@ -10,6 +10,9 @@ Connect to your parsing schema with SQLcl, and initiate the installation:
 lb update -changelog-file controller.xml
 ```
 
+note: Source files come from a workspace named `APP_DEV` with
+ID `10000`.
+
 Afer installation, you should grab the feed file and import it using the APEX application.
 The landing page provides a file upload form.
 
@@ -32,7 +35,7 @@ a sync job, outside the scope of this project).
 
 ## Next steps
 
-* Add liquibase.properties for schema and app ID  
+* Add liquibase.properties for schema and app ID - and set apex_application_install executions for import  
 * Show album artwork  
 * Show other movies attributes souch as primary audio, country of origin
 * Link to the netflix title? This might be inplausible
