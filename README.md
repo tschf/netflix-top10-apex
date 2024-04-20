@@ -22,7 +22,7 @@ Go to: https://www.netflix.com/tudum/top10/tv
 
 At the bottom there are links for
 
-* GLobal Lists
+* Global Lists
 * Country Lists
 * Most Popular Lists
 
