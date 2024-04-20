@@ -2,6 +2,10 @@
 
 Using APEX to better consume "Top" lists beyond a single country.
 
+## Requirements
+
+This solution is built on top of APEX 23.2 and DB 23C (free).
+
 ## Installation
 
 Connect to your parsing schema with SQLcl, and initiate the installation:
