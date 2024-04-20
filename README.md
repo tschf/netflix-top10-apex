@@ -34,4 +34,5 @@ a sync job, outside the scope of this project).
 
 * Add liquibase.properties for schema and app ID  
 * Show album artwork  
-* Show primary audio language
+* Show other movies attributes souch as primary audio, country of origin
+* Link to the netflix title? This might be inplausible
