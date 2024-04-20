@@ -32,5 +32,6 @@ a sync job, outside the scope of this project).
 
 ## Next steps
 
-[ ] Show album artwork  
-[ ] Show primary audio language
+* Add liquibase.properties for schema and app ID  
+* Show album artwork  
+* Show primary audio language
