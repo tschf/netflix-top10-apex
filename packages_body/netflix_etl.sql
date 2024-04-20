@@ -10,15 +10,21 @@ as
     merge into screen_ranking tgt
     using (
       select
-        'Australia' country_name,
-        'AU' country_iso2,
-        trunc(sysdate) week,
-        'Films' category,
-        1 weekly_rank,
-        'TODO' show_title,
-        'TODO' season_title,
-        1 cumulative_weeks_in_top_10
-      from dual
+        parsed.col001 country_name,
+        parsed.col002 country_iso2,
+        to_date(parsed.col003, 'YYYY-MM-DD') week,
+        parsed.col004 category,
+        to_number(parsed.col005) weekly_rank,
+        parsed.col006 show_title,
+        parsed.col007 season_title,
+        to_number(parsed.col008) cumulative_weeks_in_top_10
+      from
+        table(apex_data_parser.parse(
+          p_content => p_upload_file,
+          p_file_name => 'upload.tsv',
+          -- skip header row
+          p_skip_rows => 1
+        )) parsed
     ) src
     on (
       tgt.country_iso2 = src.country_iso2
