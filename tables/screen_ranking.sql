@@ -14,3 +14,9 @@ create table screen_ranking(
   constraint screen_ranking_uk1 unique (country_iso2, week, category, weekly_rank)
 );
 --rollback drop table screen_ranking;
+
+--changeset tschf:comments_screen_ranking runOnChange:true endDelimiter:; rollbackEndDelimiter:;
+comment on table screen_ranking is 'Representation of the feed file of weekly rankings as downloaded from TODO';
+
+comment on column screen_ranking.week is 'Per the netflix specification, the date is always on a Tuesday';
+--rollback not required
