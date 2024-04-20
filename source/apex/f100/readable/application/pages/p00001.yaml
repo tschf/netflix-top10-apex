@@ -37,50 +37,6 @@ server-cache:
   caching: Disabled
 
 regions: 
-- # ====== Region: Netflix Top 10 ==============================
-  id: 5477603046521414
-  identification: 
-    title: Netflix Top 10
-    type: Static Content
-
-  layout: 
-    sequence: 10
-    parent-region: No Parent
-    position: REGION_POSITION_01
-    start-new-layout: false
-    start-new-row: true
-    column: Automatic
-    new-column: true
-    column-span: Automatic
-
-  appearance: 
-    template: Hero # 5269791460521318
-    template-options: 
-    - '#DEFAULT#'
-    render-components: Above Content
-
-  accessibility: 
-    use-landmark: true
-    landmark-type: Template Default
-
-  image: 
-    file-url: '#APP_FILES#icons/app-icon-512.png'
-
-  advanced: 
-    region-display-selector: false
-    exclude-title-from-translation: false
-
-  server-cache: 
-    caching: Disabled
-
-  customization: 
-    customizable: Not Customizable By End Users
-
-  attributes: 
-    settings: 
-      output-as: HTML
-      expand-shortcuts: false
-
 - # ====== Region: Data Out Of Date ============================
   id: 5481232566532601
   identification: 
@@ -88,7 +44,7 @@ regions:
     type: Static Content
 
   source: 
-    html-code: <em>The data feed is either out of date or hasn't been loaded yet. Please grab it from TODO and upload it</em>
+    html-code: "<em>The data feed is either out of date or hasn't been loaded yet. Please grab it from <a target=\"_blank\" href=\"https://www.netflix.com/tudum/top10/\">here</a> and upload it</em>"
 
   layout: 
     sequence: 10
@@ -167,6 +123,10 @@ regions:
   advanced: 
     region-display-selector: false
     exclude-title-from-translation: false
+
+  server-side-condition: 
+    type: Rows returned
+    sql-query: select 1 from screen_ranking
 
   server-cache: 
     caching: Disabled

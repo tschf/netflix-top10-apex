@@ -39,7 +39,7 @@ prompt APPLICATION 100 - Netflix Top 10
 --     Pages:                      3
 --       Items:                    7
 --       Processes:                5
---       Regions:                  6
+--       Regions:                  5
 --       Buttons:                  2
 --       Dynamic Actions:          1
 --     Shared Components:
@@ -115,7 +115,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Netflix Top 10'
 ,p_last_updated_by=>'DEVVER'
-,p_last_upd_yyyymmddhh24miss=>'20240420121322'
+,p_last_upd_yyyymmddhh24miss=>'20240420122110'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>7
 ,p_print_server_type=>'NATIVE'
@@ -18075,21 +18075,7 @@ wwv_flow_imp_page.create_page(
 ,p_protection_level=>'C'
 ,p_page_component_map=>'13'
 ,p_last_updated_by=>'DEVVER'
-,p_last_upd_yyyymmddhh24miss=>'20240420121322'
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(5477603046521414)
-,p_plug_name=>'Netflix Top 10'
-,p_region_template_options=>'#DEFAULT#'
-,p_escape_on_http_output=>'Y'
-,p_plug_template=>wwv_flow_imp.id(5269791460521318)
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_plug_query_num_rows=>15
-,p_region_image=>'#APP_FILES#icons/app-icon-512.png'
-,p_attribute_01=>'N'
-,p_attribute_02=>'HTML'
-,p_attribute_03=>'Y'
+,p_last_upd_yyyymmddhh24miss=>'20240420122110'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(5481232566532601)
@@ -18098,7 +18084,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_template=>wwv_flow_imp.id(5229082883521314)
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'BELOW'
-,p_plug_source=>'<em>The data feed is either out of date or hasn''t been loaded yet. Please grab it from TODO and upload it</em>'
+,p_plug_source=>'<em>The data feed is either out of date or hasn''t been loaded yet. Please grab it from <a target="_blank" href="https://www.netflix.com/tudum/top10/">here</a> and upload it</em>'
 ,p_plug_display_condition_type=>'NOT_EXISTS'
 ,p_plug_display_when_condition=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'with data_days_old as (select sysdate-max(week) days from screen_ranking)',
@@ -18114,6 +18100,8 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_template_options=>'#DEFAULT#:t-Region--textContent:t-Region--scrollBody'
 ,p_plug_template=>wwv_flow_imp.id(5288843669521320)
 ,p_plug_display_sequence=>20
+,p_plug_display_condition_type=>'EXISTS'
+,p_plug_display_when_condition=>'select 1 from screen_ranking'
 ,p_attribute_01=>'N'
 ,p_attribute_02=>'HTML'
 );
