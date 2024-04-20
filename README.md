@@ -29,3 +29,8 @@ At the bottom there are links for
 For this sample, we are using "Country Lists" TSV. This is released each week so
 if you want to keep up to date, you need to re-upload the latest version (or implement
 a sync job, outside the scope of this project).
+
+## Next steps
+
+[ ] Show album artwork  
+[ ] Show primary audio language
