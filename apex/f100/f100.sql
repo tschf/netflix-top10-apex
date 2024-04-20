@@ -39,7 +39,7 @@ prompt APPLICATION 100 - Netflix Top 10
 --     Pages:                      3
 --       Items:                    4
 --       Processes:                5
---       Regions:                  3
+--       Regions:                  4
 --       Buttons:                  2
 --     Shared Components:
 --       Logic:
@@ -114,7 +114,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Netflix Top 10'
 ,p_last_updated_by=>'DEVVER'
-,p_last_upd_yyyymmddhh24miss=>'20240420044406'
+,p_last_upd_yyyymmddhh24miss=>'20240420051141'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>6
 ,p_print_server_type=>'NATIVE'
@@ -17905,7 +17905,7 @@ wwv_flow_imp_page.create_page(
 ,p_protection_level=>'C'
 ,p_page_component_map=>'13'
 ,p_last_updated_by=>'DEVVER'
-,p_last_upd_yyyymmddhh24miss=>'20240420044406'
+,p_last_upd_yyyymmddhh24miss=>'20240420051141'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(5477603046521414)
@@ -17929,8 +17929,41 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'BELOW'
 ,p_plug_source=>'<em>The data feed is either out of date or hasn''t been loaded yet. Please grab it from TODO and upload it</em>'
+,p_plug_display_condition_type=>'EXISTS'
+,p_plug_display_when_condition=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'with data_days_old as (select sysdate-max(week) days from screen_ranking)',
+'select 1',
+'from data_days_old',
+'where days > 7;'))
 ,p_attribute_01=>'N'
 ,p_attribute_02=>'HTML'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(5482051046532609)
+,p_plug_name=>'New'
+,p_region_template_options=>'#DEFAULT#'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>wwv_flow_imp.id(5234275635521314)
+,p_plug_display_sequence=>20
+,p_query_type=>'TABLE'
+,p_query_table=>'SCREEN_RANKING'
+,p_include_rowid_column=>false
+,p_lazy_loading=>false
+,p_plug_source_type=>'NATIVE_CARDS'
+,p_plug_query_num_rows_type=>'SCROLL'
+,p_show_total_row_count=>false
+);
+wwv_flow_imp_page.create_card(
+ p_id=>wwv_flow_imp.id(5482110550532610)
+,p_region_id=>wwv_flow_imp.id(5482051046532609)
+,p_layout_type=>'GRID'
+,p_title_adv_formatting=>false
+,p_title_column_name=>'SHOW_TITLE'
+,p_sub_title_adv_formatting=>false
+,p_sub_title_column_name=>'SEASON_TITLE'
+,p_body_adv_formatting=>false
+,p_second_body_adv_formatting=>false
+,p_media_adv_formatting=>false
 );
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(5481676293532605)
