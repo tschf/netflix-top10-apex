@@ -1,0 +1,14 @@
+---
+- # ====== Application Item: A_TMDB_READ_ACCESS_TOKEN ==========
+  id: 13590154839500331
+  identification: 
+    name: A_TMDB_READ_ACCESS_TOKEN
+    scope: Application
+
+  security: 
+    session-state-protection: Restricted - May not be set from browser
+    escape-special-characters: true
+
+  subscription: 
+    version-number: 3746954
+

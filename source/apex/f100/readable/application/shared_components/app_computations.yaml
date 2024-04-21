@@ -1,0 +1,18 @@
+---
+- # ====== Application Computation: A_TMDB_READ_ACCESS_TOKEN ===
+  id: 13590602888504639
+  identification: 
+    item-name: A_TMDB_READ_ACCESS_TOKEN
+
+  execution: 
+    sequence: 10
+    point: New Session
+
+  computation: 
+    type: Expression
+    language: PL/SQL
+    pl/sql-expression: app_config_api.get_config_value('TMDB_READ_ACCESS_TOKEN')
+
+  subscription: 
+    version-number: 3747075
+
