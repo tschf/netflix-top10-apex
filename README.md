@@ -33,12 +33,11 @@ ID `10000`.
 Afer installation, you should grab the feed file and import it using the APEX application.
 The landing page provides a file upload form.
 
-
 ![Region with file upload form](doc/images/upload-tsv.png)
 
 ## Feed File
 
-Go to: https://www.netflix.com/tudum/top10
+Go to: <https://www.netflix.com/tudum/top10>
 
 At the bottom there are links for
 
