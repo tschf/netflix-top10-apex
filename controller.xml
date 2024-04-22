@@ -11,6 +11,7 @@
   <includeAll path="source/views" relativeToChangelogFile="true" />
   <includeAll path="source/packages_spec" relativeToChangelogFile="true" />
   <includeAll path="source/packages_body" relativeToChangelogFile="true" />
+  <includeAll path="source/seed_data" relativeToChangelogFile="true" />
 
   <!-- APEX installation -->
   <changeSet id="apex_f100" author="tschf" runOnChange="true">
