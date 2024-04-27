@@ -16,6 +16,7 @@ drop package app_config_api;
 -- Application
 begin
   apex_application_install.set_workspace('APP_DEV');
+  apex_credential.drop_credential(p_credential_static_id => 'tmdb_read_access');
   apex_application_install.remove_application (p_application_id => 100 );
 end;
 /
