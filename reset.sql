@@ -9,6 +9,8 @@ drop table databasechangelog purge;
 drop table databasechangelog_actions purge;
 drop table databasechangeloglock purge;
 
+drop view databasechangelog_details;
+
 -- Packages
 drop package netflix_etl;
 drop package app_config_api;

@@ -5,18 +5,12 @@ create or replace package show_info_api
 authid definer
 as
 
-  type t_show_info is record (
-    tmdb_id number,
-    original_title varchar2(4000),
-    release_date date,
-    backdrop_path varchar2(4000),
-    poster_path varchar2(4000)
-  );
-
+  -- Get the show record. If the additional data hasn't yet been synced from TMDB
+  -- first fetch and update the record.
   function get_movie_show_info(
     p_show_id in number
   )
-  return t_show_info;
+  return show%rowtype;
 
 end show_info_api;
 /
