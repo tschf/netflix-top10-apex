@@ -1,5 +1,6 @@
 -- App Tables (including liquibase tables)
 drop table screen_ranking purge;
+drop table show purge;
 drop table country purge;
 drop table app_config purge;
 
