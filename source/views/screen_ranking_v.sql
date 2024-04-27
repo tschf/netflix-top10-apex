@@ -7,7 +7,7 @@ select
   screen_ranking.screen_ranking_id,
   screen_ranking.country_id,
   screen_ranking.week,
-  screen_ranking.category,
+  show.category,
   screen_ranking.weekly_rank,
   show.show_title,
   show.season_title,
