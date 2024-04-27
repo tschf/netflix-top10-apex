@@ -8,6 +8,7 @@
 
   <!-- DB OBJECTS -->
   <includeAll path="source/tables" relativeToChangelogFile="true" />
+  <includeAll path="source/table_fks" relativeToChangelogFile="true" />
   <includeAll path="source/views" relativeToChangelogFile="true" />
   <includeAll path="source/packages_spec" relativeToChangelogFile="true" />
   <includeAll path="source/packages_body" relativeToChangelogFile="true" />
