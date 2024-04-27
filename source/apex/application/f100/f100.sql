@@ -41,7 +41,7 @@ prompt APPLICATION 100 - Netflix Top 10
 --       Processes:                5
 --       Regions:                  5
 --       Buttons:                  2
---       Dynamic Actions:          2
+--       Dynamic Actions:          1
 --     Shared Components:
 --       Logic:
 --         Items:                  1
@@ -72,7 +72,7 @@ prompt APPLICATION 100 - Netflix Top 10
 --       E-Mail:
 --     Supporting Objects:  Included
 --   Version:         23.2.0
---   Instance ID:     4989548656062440
+--   Instance ID:     1276034310658160
 --
 
 prompt --application/delete_application
@@ -117,7 +117,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Netflix Top 10'
 ,p_last_updated_by=>'DEVVER'
-,p_last_upd_yyyymmddhh24miss=>'20240421101520'
+,p_last_upd_yyyymmddhh24miss=>'20240427124722'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>8
 ,p_print_server_type=>'NATIVE'
@@ -18120,7 +18120,7 @@ wwv_flow_imp_page.create_page(
 ,p_protection_level=>'C'
 ,p_page_component_map=>'13'
 ,p_last_updated_by=>'DEVVER'
-,p_last_upd_yyyymmddhh24miss=>'20240421101520'
+,p_last_upd_yyyymmddhh24miss=>'20240427124722'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(5481232566532601)
@@ -18333,59 +18333,6 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_action=>'NATIVE_REFRESH'
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_imp.id(5482718885532616)
-);
-wwv_flow_imp_page.create_page_da_event(
- p_id=>wwv_flow_imp.id(5484824625532637)
-,p_name=>'pageChange: Filtered Results'
-,p_event_sequence=>20
-,p_triggering_element_type=>'REGION'
-,p_triggering_region_id=>wwv_flow_imp.id(5482718885532616)
-,p_bind_type=>'bind'
-,p_execution_type=>'IMMEDIATE'
-,p_bind_event_type=>'NATIVE_CARDS|REGION TYPE|tablemodelviewpagechange'
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(5484971406532638)
-,p_event_id=>wwv_flow_imp.id(5484824625532637)
-,p_event_result=>'TRUE'
-,p_action_sequence=>10
-,p_execute_on_page_init=>'N'
-,p_action=>'NATIVE_JAVASCRIPT_CODE'
-,p_attribute_01=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'( async (tmdbReadAccessToken) => {',
-'',
-'  const headers = {',
-'    "accept": "application/json",',
-'    "Authorization": `Bearer ${tmdbReadAccessToken}`',
-'  };',
-'  const requestOptions = {',
-'    "headers": headers',
-'  };',
-'',
-'  const elements = document.querySelectorAll(".showPoster")',
-'  for (let el of elements){',
-'',
-'    const showTitle = el.getAttribute("data-show-title");',
-'',
-'    const resp = await fetch(`https://api.themoviedb.org/3/search/movie?query=${showTitle}`, requestOptions);',
-'    const body = await resp.json();',
-'',
-'    let imageMeta;',
-'    if (body.results.length == 1) {',
-'      imageMeta = body.results[0];',
-'',
-'    } else {',
-'      const filteredResults = body.results.filter( (result) => { return result.original_title == showTitle })',
-'      // We somehow dont have a match. Skip this iteration',
-'      if (filteredResults.length == 0) continue;',
-'      imageMeta = filteredResults[0];',
-'    }',
-'',
-'    el.setAttribute("src", `https://image.tmdb.org/t/p/w500${imageMeta.poster_path}`);',
-'',
-'  }',
-'})("&A_TMDB_READ_ACCESS_TOKEN.")'))
-,p_da_action_comment=>'TODO: This doesnt execute on page load'
 );
 wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(5481725934532606)
