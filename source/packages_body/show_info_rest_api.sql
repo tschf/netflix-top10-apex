@@ -47,6 +47,10 @@ as
       'success' value false,
       'message' value 'Cannot get show info. Likely cause is cannot find show in The Movie DB or calling unimplemented category (TV)'
     );
+    owa_util.mime_header('application/json', false);
+    htp.p('Content-Length: ' || length(l_json_out));
+    owa_util.http_header_close;
+
     sys.htp.p(l_json_out);
   end show_details;
 
