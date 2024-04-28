@@ -4,6 +4,7 @@
 create or replace force view screen_ranking_v
 as
 select
+  show.show_id,
   screen_ranking.screen_ranking_id,
   screen_ranking.country_id,
   screen_ranking.week,

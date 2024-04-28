@@ -14,7 +14,11 @@
   <includeAll path="source/packages_body" relativeToChangelogFile="true" />
   <includeAll path="source/seed_data" relativeToChangelogFile="true" />
 
-  <!-- APEX installation -->
+  <!-- APEX Parts -->
+  <!-- Workspace -->
+  <include file="source/apex/workspace/tmdb_read_access_credential.sql" relativeToChangelogFile="true" />
+
+  <!-- App installs -->
   <changeSet id="apex_f100" author="tschf" runOnChange="true">
 
     <!-- configure install parameters for the subsequent apex import process -->
@@ -28,7 +32,7 @@
 
     <!-- kick off apex import process -->
     <ora:runApexScript ownerName="tschf" sourceType="FILE" objectType="SCRIPT" objectName="f100" relativeToChangelogFile="true">
-        <ora:source> source/apex/f100/f100.sql</ora:source>
+        <ora:source> source/apex/application/f100/f100.sql</ora:source>
     </ora:runApexScript>
 
     <!-- Reset install parameters -->

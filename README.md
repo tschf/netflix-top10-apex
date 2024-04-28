@@ -17,10 +17,6 @@ name as demonstrated in the snippet below.
 export TMDB_READ_ACCESS_TOKEN="INSERT_ACTUAL_VALUE"
 ```
 
-**Important note**: At this stage, this value gets exposed client side. So if that's
-a problem for you, you can skip this step - but just be aware that the show artwork
-won't show.
-
 Connect to your parsing schema with SQLcl, and initiate the installation:
 
 ```sql

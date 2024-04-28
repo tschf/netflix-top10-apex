@@ -38,7 +38,7 @@ prompt APPLICATION 100 - Netflix Top 10
 --   Export Type:     Application Export
 --     Pages:                      3
 --       Items:                    7
---       Processes:                5
+--       Processes:                6
 --       Regions:                  5
 --       Buttons:                  2
 --       Dynamic Actions:          2
@@ -72,7 +72,7 @@ prompt APPLICATION 100 - Netflix Top 10
 --       E-Mail:
 --     Supporting Objects:  Included
 --   Version:         23.2.0
---   Instance ID:     4989548656062440
+--   Instance ID:     1276034310658160
 --
 
 prompt --application/delete_application
@@ -117,7 +117,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Netflix Top 10'
 ,p_last_updated_by=>'DEVVER'
-,p_last_upd_yyyymmddhh24miss=>'20240421101520'
+,p_last_upd_yyyymmddhh24miss=>'20240428040456'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>8
 ,p_print_server_type=>'NATIVE'
@@ -18120,7 +18120,7 @@ wwv_flow_imp_page.create_page(
 ,p_protection_level=>'C'
 ,p_page_component_map=>'13'
 ,p_last_updated_by=>'DEVVER'
-,p_last_upd_yyyymmddhh24miss=>'20240421101520'
+,p_last_upd_yyyymmddhh24miss=>'20240428040456'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(5481232566532601)
@@ -18174,6 +18174,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'select ',
+'  show_id,',
 '  category,',
 '  show_title,',
 '  season_title,',
@@ -18192,7 +18193,7 @@ wwv_flow_imp_page.create_page_plug(
 '    sysdate-week <= to_number(:P1_RANKING_AGE_DAYS)',
 '    or :P1_RANKING_AGE_DAYS is null',
 '  )',
-'group by category, show_title, season_title, badge_css_classes'))
+'group by show_id, category, show_title, season_title, badge_css_classes'))
 ,p_lazy_loading=>false
 ,p_plug_source_type=>'NATIVE_CARDS'
 ,p_ajax_items_to_submit=>'P1_COUNTRY_ID_LIST,P1_CATEGORY,P1_RANKING_AGE_DAYS'
@@ -18215,8 +18216,8 @@ wwv_flow_imp_page.create_card(
 ,p_badge_css_classes=>'&BADGE_CSS_CLASSES.'
 ,p_media_adv_formatting=>true
 ,p_media_html_expr=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<div class="a-CardView-media a-CardView-media--body  a-CardView-media--fit ">',
-'  <img data-show-title="&SHOW_TITLE." class="showPoster a-CardView-mediaImg" src="#APP_FILES#todo_poster.png" alt="" loading="lazy">',
+'<div class="a-CardView-media a-CardView-media--body a-CardView-media--fit ">',
+'  <img data-show-id="&SHOW_ID." data-show-category="&CATEGORY." class="showPoster a-CardView-mediaImg" src="#APP_FILES#todo_poster.png" alt="" loading="lazy">',
 '</div>'))
 ,p_media_display_position=>'BODY'
 );
@@ -18288,7 +18289,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_plug_id=>wwv_flow_imp.id(5482557963532614)
 ,p_prompt=>'Category'
 ,p_display_as=>'NATIVE_SELECT_LIST'
-,p_lov=>'STATIC:Film;Film,TV;TV'
+,p_lov=>'STATIC:Films;Films,TV;TV'
 ,p_lov_display_null=>'YES'
 ,p_lov_null_text=>'All Categories'
 ,p_cHeight=>1
@@ -18335,8 +18336,8 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_affected_region_id=>wwv_flow_imp.id(5482718885532616)
 );
 wwv_flow_imp_page.create_page_da_event(
- p_id=>wwv_flow_imp.id(5484824625532637)
-,p_name=>'pageChange: Filtered Results'
+ p_id=>wwv_flow_imp.id(5485199431532640)
+,p_name=>'pageChange: Show image art'
 ,p_event_sequence=>20
 ,p_triggering_element_type=>'REGION'
 ,p_triggering_region_id=>wwv_flow_imp.id(5482718885532616)
@@ -18345,47 +18346,38 @@ wwv_flow_imp_page.create_page_da_event(
 ,p_bind_event_type=>'NATIVE_CARDS|REGION TYPE|tablemodelviewpagechange'
 );
 wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(5484971406532638)
-,p_event_id=>wwv_flow_imp.id(5484824625532637)
+ p_id=>wwv_flow_imp.id(5485272298532641)
+,p_event_id=>wwv_flow_imp.id(5485199431532640)
 ,p_event_result=>'TRUE'
 ,p_action_sequence=>10
 ,p_execute_on_page_init=>'N'
+,p_name=>'Update show artwork'
 ,p_action=>'NATIVE_JAVASCRIPT_CODE'
 ,p_attribute_01=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'( async (tmdbReadAccessToken) => {',
-'',
-'  const headers = {',
-'    "accept": "application/json",',
-'    "Authorization": `Bearer ${tmdbReadAccessToken}`',
-'  };',
-'  const requestOptions = {',
-'    "headers": headers',
-'  };',
+'( function(){',
 '',
 '  const elements = document.querySelectorAll(".showPoster")',
+'  ',
 '  for (let el of elements){',
-'',
-'    const showTitle = el.getAttribute("data-show-title");',
-'',
-'    const resp = await fetch(`https://api.themoviedb.org/3/search/movie?query=${showTitle}`, requestOptions);',
-'    const body = await resp.json();',
-'',
-'    let imageMeta;',
-'    if (body.results.length == 1) {',
-'      imageMeta = body.results[0];',
-'',
-'    } else {',
-'      const filteredResults = body.results.filter( (result) => { return result.original_title == showTitle })',
-'      // We somehow dont have a match. Skip this iteration',
-'      if (filteredResults.length == 0) continue;',
-'      imageMeta = filteredResults[0];',
+'    const showId = el.getAttribute("data-show-id");',
+'    const showCategory = el.getAttribute("data-show-category");',
+'    ',
+'    if (showCategory == "TV") {',
+'      apex.debug.info("TV not implemented yet");',
+'      continue;',
 '    }',
 '',
-'    el.setAttribute("src", `https://image.tmdb.org/t/p/w500${imageMeta.poster_path}`);',
-'',
+'    apex.server.process( "show_details", {',
+'      x01: showId',
+'    })',
+'    .then ( data => {',
+'      if (data.success){',
+'        el.setAttribute("src", `https://image.tmdb.org/t/p/w500${data.posterPath}`);',
+'      }',
+'    });',
 '  }',
-'})("&A_TMDB_READ_ACCESS_TOKEN.")'))
-,p_da_action_comment=>'TODO: This doesnt execute on page load'
+'',
+'})();'))
 );
 wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(5481725934532606)
@@ -18408,6 +18400,27 @@ wwv_flow_imp_page.create_page_process(
 ,p_error_display_location=>'INLINE_IN_NOTIFICATION'
 ,p_process_success_message=>'Uploaded file has been processed.'
 ,p_internal_uid=>5481725934532606
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(5485092252532639)
+,p_process_sequence=>10
+,p_process_point=>'ON_DEMAND'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'show_details'
+,p_process_sql_clob=>'show_info_rest_api.show_details(p_show_id => to_number(apex_application.g_x01));'
+,p_process_clob_language=>'PLSQL'
+,p_internal_uid=>5485092252532639
+,p_process_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'TODO: This might be better served in a REST module.',
+'',
+'Call with code:',
+'',
+'apex.server.process( "show_details", {',
+'  x01: "14"',
+'})',
+'.then ( data => {',
+'console.log(data);',
+'})'))
 );
 end;
 /
