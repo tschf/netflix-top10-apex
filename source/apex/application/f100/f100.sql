@@ -117,7 +117,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Netflix Top 10'
 ,p_last_updated_by=>'DEVVER'
-,p_last_upd_yyyymmddhh24miss=>'20240428033621'
+,p_last_upd_yyyymmddhh24miss=>'20240428034343'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>8
 ,p_print_server_type=>'NATIVE'
@@ -18120,7 +18120,7 @@ wwv_flow_imp_page.create_page(
 ,p_protection_level=>'C'
 ,p_page_component_map=>'13'
 ,p_last_updated_by=>'DEVVER'
-,p_last_upd_yyyymmddhh24miss=>'20240428033621'
+,p_last_upd_yyyymmddhh24miss=>'20240428034343'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(5481232566532601)
@@ -18174,6 +18174,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'select ',
+'  show_id,',
 '  category,',
 '  show_title,',
 '  season_title,',
@@ -18192,7 +18193,7 @@ wwv_flow_imp_page.create_page_plug(
 '    sysdate-week <= to_number(:P1_RANKING_AGE_DAYS)',
 '    or :P1_RANKING_AGE_DAYS is null',
 '  )',
-'group by category, show_title, season_title, badge_css_classes'))
+'group by show_id, category, show_title, season_title, badge_css_classes'))
 ,p_lazy_loading=>false
 ,p_plug_source_type=>'NATIVE_CARDS'
 ,p_ajax_items_to_submit=>'P1_COUNTRY_ID_LIST,P1_CATEGORY,P1_RANKING_AGE_DAYS'
@@ -18215,8 +18216,8 @@ wwv_flow_imp_page.create_card(
 ,p_badge_css_classes=>'&BADGE_CSS_CLASSES.'
 ,p_media_adv_formatting=>true
 ,p_media_html_expr=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<div class="a-CardView-media a-CardView-media--body  a-CardView-media--fit ">',
-'  <img data-show-title="&SHOW_TITLE." class="showPoster a-CardView-mediaImg" src="#APP_FILES#todo_poster.png" alt="" loading="lazy">',
+'<div class="a-CardView-media a-CardView-media--body a-CardView-media--fit ">',
+'  <img data-show-id="&SHOW_ID." data-show-category="&CATEGORY." class="showPoster a-CardView-mediaImg" src="#APP_FILES#todo_poster.png" alt="" loading="lazy">',
 '</div>'))
 ,p_media_display_position=>'BODY'
 );
@@ -18288,7 +18289,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_item_plug_id=>wwv_flow_imp.id(5482557963532614)
 ,p_prompt=>'Category'
 ,p_display_as=>'NATIVE_SELECT_LIST'
-,p_lov=>'STATIC:Film;Film,TV;TV'
+,p_lov=>'STATIC:Films;Films,TV;TV'
 ,p_lov_display_null=>'YES'
 ,p_lov_null_text=>'All Categories'
 ,p_cHeight=>1

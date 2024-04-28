@@ -193,6 +193,7 @@ regions:
     type: SQL Query
     sql-query: |
       select 
+        show_id,
         category,
         show_title,
         season_title,
@@ -211,7 +212,7 @@ regions:
           sysdate-week <= to_number(:P1_RANKING_AGE_DAYS)
           or :P1_RANKING_AGE_DAYS is null
         )
-      group by category, show_title, season_title, badge_css_classes
+      group by show_id, category, show_title, season_title, badge_css_classes
     page-items-to-submit: 
     - P1_COUNTRY_ID_LIST
     - P1_CATEGORY
@@ -276,8 +277,8 @@ regions:
     media: 
       advanced-formatting: true
       html-expression: |
-        <div class="a-CardView-media a-CardView-media--body  a-CardView-media--fit ">
-          <img data-show-title="&SHOW_TITLE." class="showPoster a-CardView-mediaImg" src="#APP_FILES#todo_poster.png" alt="" loading="lazy">
+        <div class="a-CardView-media a-CardView-media--body a-CardView-media--fit ">
+          <img data-show-id="&SHOW_ID." data-show-category="&CATEGORY." class="showPoster a-CardView-mediaImg" src="#APP_FILES#todo_poster.png" alt="" loading="lazy">
         </div>
       position: Body
 
@@ -451,7 +452,7 @@ page-items:
 
   list-of-values: 
     type: Static Values
-    static-values: 'STATIC:Film;Film,TV;TV'
+    static-values: 'STATIC:Films;Films,TV;TV'
     display-extra-values: true
     display-null-value: true
     null-display-value: All Categories
