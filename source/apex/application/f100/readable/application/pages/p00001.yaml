@@ -631,6 +631,36 @@ processes:
   error: 
     display-location: Inline in Notification
 
+- # ====== Process: show_details ===============================
+  id: 5485092252532639
+  identification: 
+    name: show_details
+    type: Execute Code
+    execution-chain: None
+
+  source: 
+    location: Local Database
+    language: PL/SQL
+    pl/sql-code: show_info_rest_api.show_details(p_show_id => to_number(apex_application.g_x01));
+
+  execution: 
+    sequence: 10
+    point: Ajax Callback
+    run-process: Once Per Page Visit (default)
+
+  comments: 
+    comments: |
+      TODO: This might be better served in a REST module.
+      
+      Call with code:
+      
+      apex.server.process( "show_details", {
+        x01: "14"
+      })
+      .then ( data => {
+      console.log(data);
+      })
+
 branches: 
 - # ====== Branch: Branch to self ==============================
   id: 5481917990532608

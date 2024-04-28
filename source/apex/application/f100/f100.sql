@@ -38,7 +38,7 @@ prompt APPLICATION 100 - Netflix Top 10
 --   Export Type:     Application Export
 --     Pages:                      3
 --       Items:                    7
---       Processes:                5
+--       Processes:                6
 --       Regions:                  5
 --       Buttons:                  2
 --       Dynamic Actions:          1
@@ -117,7 +117,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Netflix Top 10'
 ,p_last_updated_by=>'DEVVER'
-,p_last_upd_yyyymmddhh24miss=>'20240427124722'
+,p_last_upd_yyyymmddhh24miss=>'20240428033621'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>8
 ,p_print_server_type=>'NATIVE'
@@ -18120,7 +18120,7 @@ wwv_flow_imp_page.create_page(
 ,p_protection_level=>'C'
 ,p_page_component_map=>'13'
 ,p_last_updated_by=>'DEVVER'
-,p_last_upd_yyyymmddhh24miss=>'20240427124722'
+,p_last_upd_yyyymmddhh24miss=>'20240428033621'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(5481232566532601)
@@ -18355,6 +18355,27 @@ wwv_flow_imp_page.create_page_process(
 ,p_error_display_location=>'INLINE_IN_NOTIFICATION'
 ,p_process_success_message=>'Uploaded file has been processed.'
 ,p_internal_uid=>5481725934532606
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(5485092252532639)
+,p_process_sequence=>10
+,p_process_point=>'ON_DEMAND'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'show_details'
+,p_process_sql_clob=>'show_info_rest_api.show_details(p_show_id => to_number(apex_application.g_x01));'
+,p_process_clob_language=>'PLSQL'
+,p_internal_uid=>5485092252532639
+,p_process_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'TODO: This might be better served in a REST module.',
+'',
+'Call with code:',
+'',
+'apex.server.process( "show_details", {',
+'  x01: "14"',
+'})',
+'.then ( data => {',
+'console.log(data);',
+'})'))
 );
 end;
 /
