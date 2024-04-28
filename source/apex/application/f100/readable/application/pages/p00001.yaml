@@ -598,6 +598,61 @@ dynamic-actions:
       fire-when-event-result-is: True
       fire-on-initialization: false
 
+- # ====== Dynamic Action: pageChange: Show image art ==========
+  id: 5485199431532640
+  identification: 
+    name: 'pageChange: Show image art'
+
+  execution: 
+    sequence: 20
+    event-scope: Static
+    type: Immediate
+
+  when: 
+    event: NATIVE_CARDS|REGION TYPE|tablemodelviewpagechange
+    selection-type: Region
+    region: Filtered Results # 5482718885532616
+
+  actions: 
+  - # ====== Action: Update show artwork =========================
+    id: 5485272298532641
+    identification: 
+      name: Update show artwork
+      action: Execute JavaScript Code
+
+    settings: 
+      code: |
+        ( function(){
+        
+          const elements = document.querySelectorAll(".showPoster")
+          
+          for (let el of elements){
+            const showId = el.getAttribute("data-show-id");
+            const showCategory = el.getAttribute("data-show-category");
+            
+            if (showCategory == "TV") {
+              apex.debug.info("TV not implemented yet");
+              continue;
+            }
+        
+            apex.server.process( "show_details", {
+              x01: showId
+            })
+            .then ( data => {
+              if (data.success){
+                el.setAttribute("src", `https://image.tmdb.org/t/p/w500${data.posterPath}`);
+              }
+            });
+          }
+        
+        })();
+
+    execution: 
+      sequence: 10
+      event: 'pageChange: Show image art' # 5485199431532640
+      fire-when-event-result-is: True
+      fire-on-initialization: false
+
 processes: 
 - # ====== Process: Proceed Top10 File =========================
   id: 5481725934532606

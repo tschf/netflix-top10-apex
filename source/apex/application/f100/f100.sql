@@ -41,7 +41,7 @@ prompt APPLICATION 100 - Netflix Top 10
 --       Processes:                6
 --       Regions:                  5
 --       Buttons:                  2
---       Dynamic Actions:          1
+--       Dynamic Actions:          2
 --     Shared Components:
 --       Logic:
 --         Items:                  1
@@ -117,7 +117,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Netflix Top 10'
 ,p_last_updated_by=>'DEVVER'
-,p_last_upd_yyyymmddhh24miss=>'20240428034343'
+,p_last_upd_yyyymmddhh24miss=>'20240428040456'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>8
 ,p_print_server_type=>'NATIVE'
@@ -18120,7 +18120,7 @@ wwv_flow_imp_page.create_page(
 ,p_protection_level=>'C'
 ,p_page_component_map=>'13'
 ,p_last_updated_by=>'DEVVER'
-,p_last_upd_yyyymmddhh24miss=>'20240428034343'
+,p_last_upd_yyyymmddhh24miss=>'20240428040456'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(5481232566532601)
@@ -18334,6 +18334,50 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_action=>'NATIVE_REFRESH'
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_imp.id(5482718885532616)
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(5485199431532640)
+,p_name=>'pageChange: Show image art'
+,p_event_sequence=>20
+,p_triggering_element_type=>'REGION'
+,p_triggering_region_id=>wwv_flow_imp.id(5482718885532616)
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'NATIVE_CARDS|REGION TYPE|tablemodelviewpagechange'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(5485272298532641)
+,p_event_id=>wwv_flow_imp.id(5485199431532640)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_name=>'Update show artwork'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attribute_01=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'( function(){',
+'',
+'  const elements = document.querySelectorAll(".showPoster")',
+'  ',
+'  for (let el of elements){',
+'    const showId = el.getAttribute("data-show-id");',
+'    const showCategory = el.getAttribute("data-show-category");',
+'    ',
+'    if (showCategory == "TV") {',
+'      apex.debug.info("TV not implemented yet");',
+'      continue;',
+'    }',
+'',
+'    apex.server.process( "show_details", {',
+'      x01: showId',
+'    })',
+'    .then ( data => {',
+'      if (data.success){',
+'        el.setAttribute("src", `https://image.tmdb.org/t/p/w500${data.posterPath}`);',
+'      }',
+'    });',
+'  }',
+'',
+'})();'))
 );
 wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(5481725934532606)
