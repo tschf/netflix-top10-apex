@@ -28,6 +28,7 @@ as
         tmdb_request_api.make_request(
           p_url => apex_string.format('https://api.themoviedb.org/3/search/movie?query=%s', l_show_rec.show_title)
         );
+      apex_debug.info(p_message => l_show_search_resp_body);
 
       select
         tmdb_info.id,
@@ -54,7 +55,10 @@ as
           )
         ) tmdb_info
       where
-        tmdb_info.original_title = l_show_rec.show_title;
+        tmdb_info.original_title = l_show_rec.show_title
+      -- Just returning the first match. There are a number of cases returning
+      -- more than one title, so we need to choose one. Could be incorrect.
+      fetch first row only;
 
       l_show_rec.date_metadata_synchronized := sysdate;
 
