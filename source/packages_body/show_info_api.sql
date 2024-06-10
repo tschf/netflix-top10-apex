@@ -17,6 +17,7 @@ as
     into l_show_rec
     from show
     where show_id = p_show_id;
+    apex_debug.info('show_title='||l_show_rec.show_title);
 
     if l_show_rec.category != 'Films' then
       raise_application_error(-20001, apex_string.format('Show "%s" is of wrong category', l_show_rec.show_title));
@@ -47,6 +48,7 @@ as
           columns (
             id number path '$.id',
             original_title varchar2(4000) path '$.original_title',
+            title varchar2(4000) path '$.title',
             backdrop_path varchar2(4000) path '$.backdrop_path',
             poster_path varchar2(4000) path '$.poster_path',
             release_date date path '$.release_date'
@@ -55,7 +57,10 @@ as
           )
         ) tmdb_info
       where
-        tmdb_info.original_title = l_show_rec.show_title
+        -- original title and title could differ. Case in point is "The Tearsmith"
+        -- which has original title "Fabbricante di lacrime" but title "The Tearsmith".
+        -- Lets go with filtering only on `title` for now.
+        tmdb_info.title = l_show_rec.show_title
       -- Just returning the first match. There are a number of cases returning
       -- more than one title, so we need to choose one. Could be incorrect.
       fetch first row only;
