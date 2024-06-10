@@ -25,6 +25,7 @@ as
 
     if l_show_rec.date_metadata_synchronized is null then
 
+      -- Doc reference: https://developer.themoviedb.org/reference/search-movie
       l_show_search_resp_body :=
         tmdb_request_api.make_request(
           p_url => apex_string.format('https://api.themoviedb.org/3/search/movie?query=%s', l_show_rec.show_title)
