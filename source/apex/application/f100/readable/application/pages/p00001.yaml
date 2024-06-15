@@ -628,7 +628,6 @@ dynamic-actions:
           
           for (let el of elements){
             const showId = el.getAttribute("data-show-id");
-            const showCategory = el.getAttribute("data-show-category");
         
             apex.server.process( "show_details", {
               x01: showId
