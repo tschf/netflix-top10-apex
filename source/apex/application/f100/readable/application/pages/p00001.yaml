@@ -628,12 +628,6 @@ dynamic-actions:
           
           for (let el of elements){
             const showId = el.getAttribute("data-show-id");
-            const showCategory = el.getAttribute("data-show-category");
-            
-            if (showCategory == "TV") {
-              apex.debug.info("TV not implemented yet");
-              continue;
-            }
         
             apex.server.process( "show_details", {
               x01: showId

@@ -10,8 +10,6 @@ as
   as
     l_json_out varchar2(32767);
     l_show_rec show%rowtype;
-
-    e_not_implemented exception;
   begin
 
     select * into l_show_rec
@@ -24,7 +22,7 @@ as
       if l_show_rec.category = 'Films' then
         l_show_rec := show_info_api.get_movie_show_info(p_show_id => p_show_id);
       elsif l_show_rec.category = 'TV' then
-        raise e_not_implemented;
+        l_show_rec := show_info_api.get_tv_show_info(p_show_id => p_show_id);
       end if;
     end if;
 
@@ -45,7 +43,7 @@ as
     -- catch all and don't raise exception since it's used over REST
     l_json_out := json_object(
       'success' value false,
-      'message' value 'Cannot get show info. Likely cause is cannot find show in The Movie DB or calling unimplemented category (TV)',
+      'message' value 'Cannot get show info. Likely cause is cannot find show in The Movie DB',
       'show_id' value p_show_id,
       'show_title' value l_show_rec.show_title
     );

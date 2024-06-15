@@ -12,6 +12,13 @@ as
   )
   return show%rowtype;
 
+  --
+
+  function get_tv_show_info(
+    p_show_id in number
+  )
+  return show%rowtype;
+
 end show_info_api;
 /
 --rollback not required

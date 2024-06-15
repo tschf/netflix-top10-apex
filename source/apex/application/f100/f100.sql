@@ -72,7 +72,7 @@ prompt APPLICATION 100 - Netflix Top 10
 --       E-Mail:
 --     Supporting Objects:  Included
 --   Version:         23.2.0
---   Instance ID:     1276034310658160
+--   Instance ID:     1085051661200923
 --
 
 prompt --application/delete_application
@@ -117,7 +117,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Netflix Top 10'
 ,p_last_updated_by=>'DEVVER'
-,p_last_upd_yyyymmddhh24miss=>'20240428040456'
+,p_last_upd_yyyymmddhh24miss=>'20240615091336'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>8
 ,p_print_server_type=>'NATIVE'
@@ -18120,7 +18120,7 @@ wwv_flow_imp_page.create_page(
 ,p_protection_level=>'C'
 ,p_page_component_map=>'13'
 ,p_last_updated_by=>'DEVVER'
-,p_last_upd_yyyymmddhh24miss=>'20240428040456'
+,p_last_upd_yyyymmddhh24miss=>'20240615091336'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(5481232566532601)
@@ -18360,12 +18360,6 @@ wwv_flow_imp_page.create_page_da_action(
 '  ',
 '  for (let el of elements){',
 '    const showId = el.getAttribute("data-show-id");',
-'    const showCategory = el.getAttribute("data-show-category");',
-'    ',
-'    if (showCategory == "TV") {',
-'      apex.debug.info("TV not implemented yet");',
-'      continue;',
-'    }',
 '',
 '    apex.server.process( "show_details", {',
 '      x01: showId',
